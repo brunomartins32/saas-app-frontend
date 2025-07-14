@@ -1,0 +1,183 @@
+<div class="container contas-container">
+  <h2 class="title">Contas a Pagar/Receber</h2>
+
+  <div class="actions-bar" *ngIf="!editando">
+    <button mat-raised-button color="primary" (click)="novaConta()">
+      <mat-icon>add</mat-icon>
+      Nova Conta
+    </button>
+  </div>
+
+  <app-contas-financeiras-form
+    *ngIf="editando"
+    [conta]="contaSelecionada || getContaVazia()"
+    (salvar)="salvarConta($event)"
+    (cancelar)="cancelarEdicao()"
+  ></app-contas-financeiras-form>
+
+  <div class="spinner-wrapper" *ngIf="carregando">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <!-- Contas Ativas -->
+  <section *ngIf="!carregando && !editando" class="active-accounts-section">
+    <h3 class="section-title">Contas Ativas</h3>
+
+    <mat-table [dataSource]="contasAtivas" class="mat-elevation-z2 contas-table">
+      <!-- Coluna Descrição -->
+      <ng-container matColumnDef="descricao">
+        <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
+        <mat-cell *matCellDef="let conta">{{ conta.descricao }}</mat-cell>
+      </ng-container>
+
+      <!-- Coluna Valor -->
+      <ng-container matColumnDef="valor">
+        <mat-header-cell *matHeaderCellDef>Valor</mat-header-cell>
+        <mat-cell *matCellDef="let conta">{{ conta.valor | currency : "BRL" }}</mat-cell>
+      </ng-container>
+
+      <!-- Coluna Data Vencimento -->
+      <ng-container matColumnDef="dataVencimento">
+        <mat-header-cell *matHeaderCellDef>Vencimento</mat-header-cell>
+        <mat-cell *matCellDef="let conta">
+          {{ conta.dataVencimento ? (conta.dataVencimento | date : "dd/MM/yyyy") : "--/--/----" }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- Coluna Status -->
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+        <mat-cell *matCellDef="let conta">
+          <span
+            [class.status-quitada]="conta.quitada"
+            [class.status-pendente]="!conta.quitada"
+            class="status-label"
+            >{{ conta.quitada ? "Quitada" : "Pendente" }}</span
+          >
+          <span *ngIf="conta.efetivada" class="status-efetivada">/ Efetivada</span>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Coluna Ações -->
+      <ng-container matColumnDef="acoes">
+        <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+        <mat-cell *matCellDef="let conta">
+          <div class="actions-container">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="editarConta(conta)"
+              [disabled]="contaEmProcessamento !== null"
+              matTooltip="Editar"
+              aria-label="Editar conta"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              color="accent"
+              *ngIf="!conta.quitada"
+              (click)="quitarConta(conta)"
+              [disabled]="contaEmProcessamento !== null"
+              matTooltip="Quitar"
+              aria-label="Quitar conta"
+            >
+              <mat-icon>paid</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              color="primary"
+              *ngIf="conta.quitada && !conta.efetivada"
+              (click)="efetivarConta(conta)"
+              [disabled]="contaEmProcessamento !== null"
+              matTooltip="Efetivar"
+              aria-label="Efetivar conta"
+            >
+              <mat-icon>check_circle</mat-icon>
+            </button>
+
+            <mat-icon
+              *ngIf="conta.efetivada"
+              color="primary"
+              class="status-efetivada"
+              aria-label="Conta efetivada"
+              >done_all</mat-icon
+            >
+
+            <mat-spinner
+              *ngIf="contaEmProcessamento === conta.id"
+              diameter="24"
+              class="action-spinner"
+              aria-label="Processando ação"
+            ></mat-spinner>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="colunasExibidas"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: colunasExibidas"></mat-row>
+    </mat-table>
+  </section>
+
+  <!-- Histórico de Contas Efetivadas -->
+  <section *ngIf="!carregando && !editando" class="historical-accounts-section">
+    <h3 class="section-title">Histórico de Contas Efetivadas</h3>
+
+    <mat-table
+      [dataSource]="contasEfetivadas"
+      *ngIf="contasEfetivadas.length > 0"
+      class="mat-elevation-z2 contas-table"
+    >
+      <!-- Coluna Descrição -->
+      <ng-container matColumnDef="descricao">
+        <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
+        <mat-cell *matCellDef="let conta">{{ conta.descricao }}</mat-cell>
+      </ng-container>
+
+      <!-- Coluna Valor -->
+      <ng-container matColumnDef="valor">
+        <mat-header-cell *matHeaderCellDef>Valor</mat-header-cell>
+        <mat-cell *matCellDef="let conta">
+          {{ conta.valor | currency : "BRL" : "symbol" : "1.2-2" }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- Coluna Data Vencimento -->
+      <ng-container matColumnDef="dataVencimento">
+        <mat-header-cell *matHeaderCellDef>Vencimento</mat-header-cell>
+        <mat-cell *matCellDef="let conta">
+          {{ conta.dataVencimento ? (conta.dataVencimento | date : "dd/MM/yyyy") : "--/--/----" }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- Coluna Data Efetivação -->
+      <ng-container matColumnDef="dataEfetivacao">
+        <mat-header-cell *matHeaderCellDef>Efetivada em</mat-header-cell>
+        <mat-cell *matCellDef="let conta">
+          {{ conta.dataEfetivacao ? (conta.dataEfetivacao | date : "dd/MM/yyyy") : "--/--/----" }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row
+        *matHeaderRowDef="[
+          'descricao',
+          'valor',
+          'dataVencimento',
+          'dataEfetivacao'
+        ]"
+      ></mat-header-row>
+      <mat-row
+        *matRowDef="
+          let row;
+          columns: ['descricao', 'valor', 'dataVencimento', 'dataEfetivacao']
+        "
+      ></mat-row>
+    </mat-table>
+
+    <p *ngIf="contasEfetivadas.length === 0" class="no-records">
+      Nenhuma conta efetivada
+    </p>
+  </section>
+</div>

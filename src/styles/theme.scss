@@ -1,0 +1,46 @@
+
+body {
+  background: #f4f8fb;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+}
+
+a {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+button {
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #125ea8;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+
+  th, td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  th {
+    background: #e3f2fd;
+    color: #0d47a1;
+  }
+}
+
+input, select {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
+}

@@ -1,0 +1,59 @@
+<div class="dashboard-container">
+  <h2>Dashboard Financeiro</h2>
+
+  <div class="metrics-container">
+    <!-- Card para Contas a Receber -->
+    <div class="metric-card receber">
+      <div class="metric-icon">
+        <i class="material-icons">trending_up</i>
+      </div>
+      <div class="metric-info">
+        <h3>Total a Receber</h3>
+        <p>{{ totalReceber | currency:'BRL':'symbol':'1.2-2' }}</p>
+      </div>
+    </div>
+
+    <!-- Card para Contas a Pagar -->
+    <div class="metric-card pagar">
+      <div class="metric-icon">
+        <i class="material-icons">trending_down</i>
+      </div>
+      <div class="metric-info">
+        <h3>Total a Pagar</h3>
+        <p>{{ totalPagar | currency:'BRL':'symbol':'1.2-2' }}</p>
+      </div>
+    </div>
+
+    <!-- Card para Saldo Patrimonial -->
+    <div class="metric-card saldo">
+      <div class="metric-icon">
+        <i class="material-icons">account_balance</i>
+      </div>
+      <div class="metric-info">
+        <h3>Saldo Patrimonial</h3>
+        <p>{{ saldoPatrimonial | currency:'BRL':'symbol':'1.2-2' }}</p>
+      </div>
+    </div>
+
+    <!-- Card para Valor Total -->
+    <div class="metric-card total">
+      <div class="metric-icon">
+        <i class="material-icons">summarize</i>
+      </div>
+      <div class="metric-info">
+        <h3>Valor Total</h3>
+        <p>{{ valorTotal | currency:'BRL':'symbol':'1.2-2' }}</p>
+        <small>(Saldo + Receber - Pagar)</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="grafico-container">
+    <h3>Distribuição Financeira</h3>
+    <div class="grafico">
+      <canvas #chartCanvas width="800" height="400"></canvas>
+    </div>
+  </div>
+
+  
+</div>

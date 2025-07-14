@@ -1,0 +1,36 @@
+
+<div class="header">
+  <h2>Contas Patrimoniais</h2>
+  <button class="btn" (click)="novaConta()">+ Nova Conta</button>
+</div>
+
+<table class="modern-table">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Instituição</th>
+      <th>Saldo Atual</th>
+      <th>Tipo</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let conta of contas">
+      <td>{{ conta.nome }}</td>
+      <td>{{ conta.instituicao }}</td>
+      <td>{{ conta.saldoAtual | currency:'BRL' }}</td>
+      <td>{{ conta.tipo }}</td>
+      <td>
+        <button (click)="editar(conta)">Editar</button>
+        <button (click)="deletar(conta.id)">Excluir</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-conta-patrimonial-form
+  *ngIf="editando"
+  [conta]="contaSelecionada"
+  (salvar)="salvarConta($event)"
+  (cancelar)="cancelarEdicao()"
+/>

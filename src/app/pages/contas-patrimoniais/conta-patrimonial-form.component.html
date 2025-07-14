@@ -1,0 +1,27 @@
+
+<form *ngIf="conta" (ngSubmit)="submit()" class="conta-form">
+  <label>
+    Nome:
+    <input type="text" [(ngModel)]="conta.nome" name="nome" required />
+  </label>
+  <label>
+    Instituição:
+    <input type="text" [(ngModel)]="conta.instituicao" name="instituicao" required />
+  </label>
+  <label>
+    Saldo Atual:
+    <input type="number" [(ngModel)]="conta.saldoAtual" name="saldoAtual" required />
+  </label>
+  <label>
+    Tipo:
+    <select [(ngModel)]="conta.tipo" name="tipo">
+      <option value="CONTA_CORRENTE">Conta Corrente</option>
+      <option value="POUPANCA">Poupança</option>
+      <option value="INVESTIMENTO">Investimento</option>
+    </select>
+  </label>
+  <div class="actions">
+    <button type="submit">Salvar</button>
+    <button type="button" (click)="cancelar.emit()">Cancelar</button>
+  </div>
+</form>

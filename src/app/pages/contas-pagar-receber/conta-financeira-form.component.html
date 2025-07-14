@@ -1,0 +1,68 @@
+<mat-card class="form-card">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon>monetization_on</mat-icon>
+      {{ conta.id ? 'Editar Conta' : 'Nova Conta' }}
+    </mat-card-title>
+    <mat-card-subtitle>Preencha os dados da conta</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content>
+<form #form="ngForm" (ngSubmit)="onSubmit()" class="form-container">
+      <!-- Linha 1 - Descrição -->
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Descrição</mat-label>
+          <input matInput [(ngModel)]="conta.descricao" name="descricao" required>
+          <mat-icon matSuffix>description</mat-icon>
+          <mat-hint>Ex: Aluguel, Salário, Conta de Luz</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!-- Linha 2 - Valor e Tipo -->
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="half-width">
+          <mat-label>Valor</mat-label>
+          <input matInput type="number" [(ngModel)]="conta.valor" name="valor" min="0" step="0.01" required>
+          <span matPrefix>R$&nbsp;</span>
+          <mat-icon matSuffix>attach_money</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="half-width">
+          <mat-label>Tipo</mat-label>
+          <mat-select [(ngModel)]="conta.tipo" name="tipo" required>
+            <mat-option *ngFor="let tipo of tipos" [value]="tipo.value">
+              <mat-icon>{{ tipo.value === 'A_PAGAR' ? 'money_off' : 'paid' }}</mat-icon>
+              {{ tipo.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Linha 3 - Data de Vencimento -->
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Data de Vencimento</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="conta.dataVencimento" name="dataVencimento">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-icon matSuffix>event</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Ações -->
+      <div class="form-actions">
+        <button mat-raised-button color="warn" type="button" (click)="onCancel()" class="action-button">
+          <mat-icon>cancel</mat-icon>
+          Cancelar
+        </button>
+        <button mat-raised-button color="primary" type="submit" class="action-button" [disabled]="!form.form.valid">
+          <mat-icon>save</mat-icon>
+          Salvar
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

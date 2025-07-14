@@ -1,0 +1,15 @@
+
+<form (ngSubmit)="submit()" class="conta-form">
+  <label>
+    Nome:
+    <input type="text" [(ngModel)]="conta.nome" name="nome" required />
+  </label>
+  <label>
+    Valor:
+    <input type="number" [(ngModel)]="conta.valor" name="valor" required />
+  </label>
+  <div class="actions">
+    <button type="submit">Salvar</button>
+    <button type="button" (click)="cancelar.emit()">Cancelar</button>
+  </div>
+</form>

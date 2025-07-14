@@ -1,0 +1,110 @@
+@use '@angular/material' as mat;
+
+.form-card {
+  max-width: 800px;
+  margin: 2rem auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  mat-card-header {
+    padding: 24px 24px 16px;
+
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 500;
+
+      mat-icon {
+        margin-right: 12px;
+        color: #3f51b5;
+      }
+    }
+
+    mat-card-subtitle {
+    color: #3f51b5;
+    }
+  }
+
+  mat-divider {
+    margin: 0 24px;
+  }
+
+  mat-card-content {
+    padding: 24px;
+  }
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+
+  .full-width {
+    flex: 1 1 100%;
+  }
+
+  .half-width {
+    flex: 1 1 calc(50% - 0.75rem);
+
+    @media (max-width: 600px) {
+      flex: 1 1 100%;
+    }
+  }
+}
+
+mat-form-field {
+  width: 100%;
+
+  .mat-icon {
+  color: #3f51b5;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  .action-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s;
+
+    mat-icon {
+      font-size: 20px;
+      height: 20px;
+      width: 20px;
+    }
+  }
+}
+
+/* Cores de status */
+.status-quitada {
+color: #3f51b5;
+}
+
+.status-pendente {
+  color: #3f51b5;
+}
+
+.status-efetivada {
+  color: #3f51b5;
+  font-weight: 500;
+}
